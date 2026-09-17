@@ -217,35 +217,11 @@ The validation ROC-AUC values were:
 
 Because the test set contained only 53 independent medium-volatility episodes, bootstrap resampling was used to quantify uncertainty.
 
-For the combined model,
-
-$$
-\operatorname{AUC}_{\text{combined}}
--
-\operatorname{AUC}_{\text{market}}
-$$
-
-had a 95% bootstrap interval of
-
-$$
-[-0.0070,\;0.0447].
-$$
+For the combined model, AUC_bined - AUC_market had a 95% bootstrap interval of $[-0.0070,\;0.0447].$
 
 Since the interval includes zero, the observed increase in ROC-AUC is not sufficiently precise to establish that the HMM component improves ranking performance.
 
-The bootstrap probability that
-
-$$
-\operatorname{AUC}_{\text{combined}}
->
-\operatorname{AUC}_{\text{market}}
-$$
-
-was approximately
-
-$$
-0.731.
-$$
+The bootstrap probability that AUC_combined > AUC_market was approximately $0.731.$
 
 For the Brier score, the evidence was stronger. The combined model had a lower Brier score than the market-only model in approximately
 
@@ -257,13 +233,62 @@ of bootstrap samples.
 
 This suggests that the HMM probabilities may contribute more to the quality of the predicted probabilities than to the ranking of high- versus low-volatility transitions.
 
+### Predictive results
+
+The combined model achieved the strongest overall predictive performance, although the improvement over the market-only model was relatively small.
+
+#### Feature-set comparison
+
+![Predictive performance by feature set](figures/predictive/feature_set_auc.png)
+
+The combined market + HMM model achieved the highest ROC-AUC on both the validation and test sets.
+
+#### Test-period episode predictions
+
+![Test-period episode predictions](figures/predictive/test_episode_predictions.png)
+
+The model assigns a probability that each medium-volatility episode will transition to the high-volatility regime. High-volatility exits are relatively rare and are concentrated in parts of the test period.
+
+#### Bootstrap uncertainty
+
+![Bootstrap AUC difference](figures/predictive/bootstrap_auc_difference.png)
+
+Most bootstrap samples favor the combined model, but the 95% interval crosses zero, so the improvement in ROC-AUC is not statistically conclusive.
+
 ## Project structure
 
 ```text
-src/
-├── 01_download_data.py
-├── 02_prepare_returns.py
-├── 03_fit_hmm.py
-├── 04_model_selection.py
-└── 05_figures.py
+HMM-market-regime-detection/
+│
+├── src/
+│   ├── 01_download_data.py
+│   ├── 02_prepare_returns.py
+│   ├── 03_fit_hmm.py
+│   ├── 04_model_selection.py
+│   └── 05_figures.py
+│
+├── predictive/
+│   ├── 01_split_data.py
+│   ├── 02_fit_hmm_train.py
+│   ├── 03_filter_regimes.py
+│   ├── 04_prediction_data.py
+│   ├── 05_train_classifier.py
+│   ├── 06_evaluation.py
+│   ├── 07_compare_feature_sets.py
+│   ├── 08_bootstrap_uncertainty.py
+│   └── 09_predictive_figures.py
+│
+├── figures/
+│   ├── market_regimes.png
+│   ├── return_distributions.png
+│   ├── transition_matrix.png
+│   ├── high_volatility_probability.png
+│   └── predictive/
+│       ├── feature_set_auc.png
+│       ├── test_episode_predictions.png
+│       └── bootstrap_auc_difference.png
+│
+├── README.md
+├── requirements.txt
+└── .gitignore
 ```
