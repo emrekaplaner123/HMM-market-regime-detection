@@ -255,6 +255,30 @@ The model assigns a probability that each medium-volatility episode will transit
 
 Most bootstrap samples favor the combined model, but the 95% interval crosses zero, so the improvement in ROC-AUC is not statistically conclusive.
 
+## Limitations and modelling choices
+
+Several parts of the project are modelling choices rather than quantities learned directly from the data:
+
+- The HMM uses three states for interpretability: low-, medium-, and high-volatility. AIC and BIC preferred richer specifications, so three states should be viewed as a parsimonious choice rather than an objectively optimal number.
+
+- Returns are assumed to be Gaussian within each regime, $r_t \mid Z_t=k \sim \mathcal{N}(\mu_k,\sigma_k^2)$, even though financial returns are typically heavy-tailed.
+
+- The predictive model uses fixed 5- and 20-day windows for returns, volatility and drawdown. These are reasonable but not unique choices.
+
+- The train/validation/test split is chronological and leakage-free, but the exact dates are still chosen by the researcher.
+
+- The predictive HMM is fitted on the training period and then kept fixed. A more realistic extension would periodically refit the HMM using an expanding window.
+
+- Medium-volatility episodes are defined using the most likely filtered state, even when the state probabilities may be close.
+
+- Only the first observation of each medium-volatility episode is used in the final evaluation. This reduces dependence between observations, but it is still one particular definition of the forecasting problem.
+
+- The final test set contains only 53 medium-volatility episodes and 10 high-volatility exits, so the strong test AUC should be interpreted cautiously.
+
+- Several high-volatility exits in the test period are concentrated around similar market conditions, particularly 2022, so performance may partly reflect the characteristics of that period.
+
+These choices do not invalidate the results, but they limit how strongly they can be generalized beyond the sample and specification used here.
+
 ## Project structure
 
 ```text
