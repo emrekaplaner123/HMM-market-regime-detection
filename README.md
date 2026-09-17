@@ -279,7 +279,7 @@ Most bootstrap samples favor the combined model, but the 95% interval crosses ze
 
 Several parts of the project are modelling choices rather than quantities learned directly from the data:
 
-- The HMM uses three states for interpretability: low-, medium-, and high-volatility. AIC and BIC preferred richer specifications, so three states should be viewed as a parsimonious choice rather than an objectively optimal number.
+- The HMM uses three states for interpretability: low-, medium-, and high-volatility. AIC and BIC preferred richer specifications, so three states should be viewed as a choice rather than an objectively optimal number.
 
 - Returns are assumed to be Gaussian within each regime, $r_t \mid Z_t=k \sim \mathcal{N}(\mu_k,\sigma_k^2)$, even though financial returns are typically heavy-tailed.
 
