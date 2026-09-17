@@ -42,6 +42,24 @@ A_{ij}
 P(Z_{t+1}=j \mid Z_t=i).
 $$
 
+## Results
+
+### Hidden market regimes
+
+![S&P 500 hidden market regimes](figures/return_hmm_regimes.png)
+
+### Return distributions by regime
+
+![Return distributions](figures/return_distributions.png)
+
+### HMM transition probabilities
+
+![Transition matrix](figures/fitted_transition_matrix.png)
+
+### Probability of high-volatility regime
+
+![High volatility probability](figures/high_volatility_probability.png)
+
 ## Project structure
 
 ```text
