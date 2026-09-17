@@ -137,6 +137,26 @@ $$
 
 This is different from the retrospective HMM, since no observations after time $t$ enter the calculation.
 
+### Filtered HMM results
+
+Unlike the retrospective HMM, these regime estimates use only information available up to each point in time. The filtered classifications are therefore more responsive and less smooth than the original full-sample regime estimates.
+
+#### Filtered market regimes
+
+![Filtered market regimes](figures/predictive/predictive_market_regimes.png)
+
+#### Return distributions by filtered regime
+
+![Return distributions by filtered regime](figures/predictive/predictive_return_distributions.png)
+
+#### Training-period transition probabilities
+
+![Training-period transition matrix](figures/predictive/predictive_transition_matrix.png)
+
+#### Filtered high-volatility probability
+
+![Filtered high-volatility probability](figures/predictive/predictive_high_volatility_probability.png)
+
 ### Logistic regression
 
 The transition model is a binary logistic regression,
@@ -300,7 +320,8 @@ HMM-market-regime-detection/
 │   ├── 06_evaluation.py
 │   ├── 07_compare_feature_sets.py
 │   ├── 08_bootstrap_uncertainty.py
-│   └── 09_predictive_figures.py
+│   ├── 09_predictive_figures.py
+│   └── 10_hmm_figures.py
 │
 ├── figures/
 │   ├── market_regimes.png
@@ -310,7 +331,11 @@ HMM-market-regime-detection/
 │   └── predictive/
 │       ├── feature_set_auc.png
 │       ├── test_episode_predictions.png
-│       └── bootstrap_auc_difference.png
+│       ├── bootstrap_auc_difference.png
+│       ├── predictive_market_regimes.png
+│       ├── predictive_return_distributions.png
+│       ├── predictive_transition_matrix.png
+│       └── predictive_high_volatility_probability.png
 │
 ├── README.md
 ├── requirements.txt
