@@ -46,20 +46,19 @@ $$
 
 ### Hidden market regimes
 
-![S&P 500 hidden market regimes](figures/return_hmm_regimes.png)
+![Hidden market regimes](figures/market_regimes.png)
 
 ### Return distributions by regime
 
 ![Return distributions](figures/return_distributions.png)
 
-### HMM transition probabilities
+### Transition probabilities
 
-![Transition matrix](figures/fitted_transition_matrix.png)
+![Transition matrix](figures/transition_matrix.png)
 
-### Probability of high-volatility regime
+### High-volatility regime probability
 
-![High volatility probability](figures/high_volatility_probability.png)
-
+![High-volatility probability](figures/high_volatility_probability.png)
 ## Project structure
 
 ```text
@@ -68,4 +67,8 @@ src/
 ├── 02_prepare_returns.py
 ├── 03_fit_hmm.py
 ├── 04_model_selection.py
+<<<<<<< HEAD
 └── 05_figures.py
+=======
+└── 05_figures.py
+>>>>>>> 93c79ba (Update final HMM figures)
