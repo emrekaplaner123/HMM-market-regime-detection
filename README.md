@@ -14,33 +14,33 @@ $$
 
 The hidden market state is
 
-\[
+$$
 Z_t \in \{1,2,3\},
-\]
+$$
 
 with Markov dynamics
 
-\[
+$$
 P(Z_t \mid Z_{t-1}, Z_{t-2}, \ldots)
 =
 P(Z_t \mid Z_{t-1}).
-\]
+$$
 
 Conditional on the hidden state,
 
-\[
+$$
 r_t \mid Z_t=k
 \sim
 \mathcal{N}(\mu_k,\sigma_k^2).
-\]
+$$
 
 The transition probabilities are
 
-\[
+$$
 A_{ij}
 =
 P(Z_{t+1}=j \mid Z_t=i).
-\]
+$$
 
 ## Project structure
 
@@ -50,4 +50,4 @@ src/
 ├── 02_prepare_returns.py
 ├── 03_fit_hmm.py
 ├── 04_model_selection.py
-└── 05_make_figures.py
+└── 05_figures.py
