@@ -8,9 +8,9 @@ The model is trained using daily log returns only. The hidden states are interpr
 
 Daily log returns are defined as
 
-\[
+$$
 r_t = \log\left(\frac{P_t}{P_{t-1}}\right).
-\]
+$$
 
 The hidden market state is
 
