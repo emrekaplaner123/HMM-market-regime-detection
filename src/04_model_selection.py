@@ -1,72 +1,63 @@
 from pathlib import Path
-
+import numpy as np
 import pandas as pd
+from hmmlearn.hmm import GaussianHMM
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+root = Path(__file__).resolve().parents[1]
 
-INPUT_PATH = PROJECT_ROOT / "data" / "processed" / "sp500_regimes.csv"
-OUTPUT_PATH = PROJECT_ROOT / "data" / "processed" / "regime_summary.csv"
+input_file = root / "data" / "processed" / "sp500_returns.csv"
+output_file = root / "data" / "processed" / "model_selection.csv"
 
-df = pd.read_csv(INPUT_PATH, index_col=0, parse_dates=True)
-
-volatility_by_state = (
-    df.groupby("State")["Volatility20"]
-    .mean()
-    .sort_values()
+df = pd.read_csv(
+    input_file,
+    index_col="Date",
+    parse_dates=["Date"]
 )
 
-ordered_states = volatility_by_state.index.tolist()
+X = df[["Return_scaled"]].values
 
-labels = {
-    ordered_states[0]: "Low volatility",
-    ordered_states[1]: "Normal",
-    ordered_states[2]: "High volatility"
-}
+n = len(X)
+d = X.shape[1]
 
-df["Regime"] = df["State"].map(labels)
+results = []
 
-summary = df.groupby(["State", "Regime"]).agg(
-    Observations=("LogReturn", "size"),
-    Mean_daily_return=("LogReturn", "mean"),
-    Daily_return_std=("LogReturn", "std"),
-    Mean_annualized_volatility=("Volatility20", "mean")
-)
+for k in range(2, 6):
+    best_score = -np.inf
 
-summary["Fraction"] = summary["Observations"] / len(df)
-summary["Annualized_mean_return"] = summary["Mean_daily_return"] * 252
+    for seed in range(10):
+        model = GaussianHMM(
+            n_components=k,
+            covariance_type="full",
+            n_iter=1000,
+            random_state=seed
+        )
 
-run_id = (df["State"] != df["State"].shift()).cumsum()
-run_id.name = "Run"
+        model.fit(X)
+        score = model.score(X)
 
-runs = (
-    df.groupby(run_id)
-    .agg(
-        State=("State", "first"),
-        Regime=("Regime", "first"),
-        Start=("State", lambda x: x.index.min()),
-        End=("State", lambda x: x.index.max()),
-        Duration=("State", "size")
+        if score > best_score:
+            best_score = score
+
+    parameters = (
+        (k - 1)
+        + k * (k - 1)
+        + k * d
+        + k * d * (d + 1) / 2
     )
-)
 
-duration_summary = runs.groupby(["State", "Regime"])["Duration"].agg(
-    Average_duration="mean",
-    Median_duration="median",
-    Maximum_duration="max"
-)
+    aic = -2 * best_score + 2 * parameters
+    bic = -2 * best_score + parameters * np.log(n)
 
-summary = summary.join(duration_summary)
+    results.append({
+        "States": k,
+        "LogLikelihood": best_score,
+        "Parameters": int(parameters),
+        "AIC": aic,
+        "BIC": bic
+    })
 
-print(summary.round(4))
+results = pd.DataFrame(results)
 
-print("\nLongest regime periods:")
-print(
-    runs.sort_values("Duration", ascending=False)
-    .head(15)
-    .to_string(index=False)
-)
+results.to_csv(output_file, index=False)
 
-summary.to_csv(OUTPUT_PATH)
-df.to_csv(INPUT_PATH)
-
-print(f"\nSaved summary to: {OUTPUT_PATH}")
+print(results.round(2))
