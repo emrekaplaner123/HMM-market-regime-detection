@@ -285,8 +285,6 @@ Several parts of the project are modelling choices rather than quantities learne
 
 - The predictive model uses fixed 5- and 20-day windows for returns, volatility and drawdown. These are reasonable but not unique choices.
 
-- The train/validation/test split is chronological and leakage-free, but the exact dates are still chosen by the researcher.
-
 - The predictive HMM is fitted on the training period and then kept fixed. A more realistic extension would periodically refit the HMM using an expanding window.
 
 - Medium-volatility episodes are defined using the most likely filtered state, even when the state probabilities may be close.
